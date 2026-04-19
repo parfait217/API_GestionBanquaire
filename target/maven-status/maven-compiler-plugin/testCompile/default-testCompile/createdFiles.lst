@@ -1,0 +1,4 @@
+com\example\banque\BanqueApplicationTests.class
+com\example\banque\controlleurs\AuthControllerTest.class
+com\example\banque\services\ClientServiceTest.class
+com\example\banque\services\AuthServiceTest.class

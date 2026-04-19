@@ -1,0 +1,240 @@
+{
+  "info": {
+    "name": "Gestion Bancaire API",
+    "description": "Tests complets de l'API de Gestion Bancaire avec JWT",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 AUTHENTIFICATION",
+      "item": [
+        {
+          "name": "1️⃣ Test Public (pas de token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/auth/test"
+          }
+        },
+        {
+          "name": "2️⃣ S'inscrire",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dupont\",\n  \"prenom\": \"Jean\",\n  \"email\": \"jean.dupont@example.com\",\n  \"telephone\": \"0612345678\",\n  \"username\": \"jeandupont\",\n  \"password\": \"SecurePassword123!\",\n  \"passwordConfirm\": \"SecurePassword123!\"\n}"
+            },
+            "url": "http://localhost:8080/api/auth/register"
+          }
+        },
+        {
+          "name": "3️⃣ Se connecter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"jeandupont\",\n  \"password\": \"SecurePassword123!\"\n}"
+            },
+            "url": "http://localhost:8080/api/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧑 CLIENTS (Protégé)",
+      "item": [
+        {
+          "name": "Lister tous les clients",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/clients"
+          }
+        },
+        {
+          "name": "Consulter un client",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/clients/1"
+          }
+        },
+        {
+          "name": "Supprimer un client",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/clients/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏦 COMPTES (Protégé)",
+      "item": [
+        {
+          "name": "Ouvrir un compte",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"client_id\": 1,\n  \"typeCompte\": \"COURANT\",\n  \"soldeInitial\": 1000.00\n}"
+            },
+            "url": "http://localhost:8080/api/comptes"
+          }
+        },
+        {
+          "name": "Lister comptes du client",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/comptes/client/1"
+          }
+        },
+        {
+          "name": "Consulter solde du compte",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/comptes/101/solde"
+          }
+        }
+      ]
+    },
+    {
+      "name": "💳 TRANSACTIONS (Protégé)",
+      "item": [
+        {
+          "name": "Effectuer un dépôt",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"compteId\": 1,\n  \"montant\": 500.00,\n  \"libelle\": \"Salaire mensuel\"\n}"
+            },
+            "url": "http://localhost:8080/api/operations/depot"
+          }
+        },
+        {
+          "name": "Effectuer un retrait",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"compteId\": 1,\n  \"montant\": 100.00,\n  \"libelle\": \"Retrait espèces\"\n}"
+            },
+            "url": "http://localhost:8080/api/operations/retrait"
+          }
+        },
+        {
+          "name": "Effectuer un virement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"compteSource\": 1,\n  \"compteDestination\": 2,\n  \"montant\": 250.00,\n  \"libelle\": \"Virement vers compte épargne\"\n}"
+            },
+            "url": "http://localhost:8080/api/operations/virement"
+          }
+        },
+        {
+          "name": "Consulter l'historique",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "http://localhost:8080/api/operations/releve/1"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
