@@ -7,8 +7,10 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
 /**
  * Configuration Swagger/OpenAPI 3 pour la documentation automatique de l'API
@@ -21,7 +23,12 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        Server productionServer = new Server()
+                .url("https://api-gestionbanquaire.onrender.com")
+                .description("Serveur de Production");
+
         return new OpenAPI()
+                .servers(List.of(productionServer))
                 .info(new Info()
                         .title("API Gestion Bancaire")
                         .version("2.0")
@@ -37,9 +44,7 @@ public class OpenApiConfig {
                                 "- **Algorithme** : HS512\n" +
                                 "- **Format** : Bearer token dans Authorization header\n\n" +
                                 "## 📡 Points d'accès\n" +
-                                "- **Swagger UI** : http://localhost:8080/swagger-ui.html\n" +
-                                "- **OpenAPI JSON** : http://localhost:8080/v3/api-docs\n" +
-                                "- **Base URL** : http://localhost:8080")
+                                "- **Base URL** : https://api-gestionbanquaire.onrender.com")
                         .contact(new Contact()
                                 .name("Équipe de Développement")
                                 .email("dev@banque.local")
