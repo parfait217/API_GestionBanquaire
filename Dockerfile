@@ -3,6 +3,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 COPY mvnw .
+COPY .mvn .mvn
 RUN chmod +x mvnw
 RUN apk add --no-cache maven
 RUN ./mvnw clean package -DskipTests
